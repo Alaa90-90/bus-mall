@@ -5,6 +5,7 @@ let photos = document.getElementById('img-border');
 let imgone = document.getElementById('left-img');
 let imgtwo = document.getElementById('mid-img');
 let imgthree = document.getElementById('right-img');
+let press;
 
 // console.log(photos);
 
@@ -77,10 +78,9 @@ function render() {
     imgtwo.src = userSelection[mindex].source;
     imgthree.src = userSelection[rindex].source;
 
-userSelection[lindex].numShown++;
-userSelection[mindex].numShown++;
-
-userSelection[rindex].numShown++;
+    userSelection[lindex].numShown++;
+    userSelection[mindex].numShown++;
+    userSelection[rindex].numShown++;
 
     // console.log(lindex);
     // console.log(mindex);
@@ -105,45 +105,52 @@ imgthree.addEventListener('click', userClick);
 function userClick(event) {
     userTry++;
 
-    if (userTry<maxTry) {
+    if (userTry < maxTry) {
         if (event.target.id === 'left-img') {
             userSelection[lindex].votes++;
-            userSelection[lindex].numShown++;
+            // userSelection[lindex].numShown++;
             // console.log(userSelection[lindex]);
         } else if (event.target.id === 'mid-img') {
             userSelection[mindex].votes++;
-            userSelection[lindex].numShown++;
+            // userSelection[lindex].numShown++;
             // console.log(userSelection[mindex]);
 
         } else {
             userSelection[rindex].votes++;
-            userSelection[lindex].numShown++;
+            // userSelection[lindex].numShown++;
             // console.log(userSelection[rindex]);
 
         }
         render();
 
     } else {
-      
-            let press = document.createElement('result');
-            press.addEventListener('click',report);
 
-            function report(event) {
-                let list = document.getElementById('survey-result');
+         press = document.getElementById('result');
+        press.addEventListener('click', report);
 
-                for (let i = 0; i < userSelection.length; i++) {
-                    let listItems = document.createElement('li');
-                    list.appendChild(listItems);
-                    listItems.textContent = `${userSelection[i].product} has ${userSelection[i].votes} and it is appear ${userSelection[i].numShown} times on the user screen !`;
-                }
+       
 
-            }
-      
 
     }
 
-
+    
 
 
 }
 
+
+
+
+
+function report() {
+
+    let list = document.getElementById('survey-result');
+
+    for (let i = 0; i < userSelection.length; i++) {
+        let listItems = document.createElement('li');
+        list.appendChild(listItems);
+        listItems.textContent = `${userSelection[i].product} has ${userSelection[i].votes} and it is appear ${userSelection[i].numShown} times on the user screen !`;
+    }
+    press.removeEventListener('click', report);
+
+}
