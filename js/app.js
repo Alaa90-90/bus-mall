@@ -5,9 +5,6 @@ let photos = document.getElementById('img-border');
 let imgone = document.getElementById('left-img');
 let imgtwo = document.getElementById('mid-img');
 let imgthree = document.getElementById('right-img');
-let press;
-
-// console.log(photos);
 
 let maxTry = 25;
 let userTry = 0;
@@ -15,21 +12,24 @@ let userTry = 0;
 let lindex;
 let mindex;
 let rindex;
-
+let press;
 
 let userSelection = [];
+let nameShow = [];
+let timesvote = [];
+let timesShown = [];
 
 function Choice(product, src) {
     this.product = product;
     this.source = src;
-    this.numShown = 0;
     this.votes = 0;
-
+    this.numShown = 0;
+    Choice.all.push(this);
     userSelection.push(this);
+    nameShow.push(this.product);
+
 }
-
-
-
+Choice.all = [];
 new Choice('bag', 'img/bag.jpg');
 new Choice('banana', 'img/banana.jpg');
 new Choice('bathroom', 'img/bathroom.jpg');
@@ -50,14 +50,9 @@ new Choice('unicorn', 'img/unicorn.jpg');
 new Choice('water-can', 'img/water-can.jpg');
 new Choice('wine-glass', 'img/wine-glass.jpg');
 
-// console.log(userSelection);
-
 function randomchoice() {
     return Math.floor(Math.random() * userSelection.length)
 }
-// console.log(randomchoice());
-
-
 
 function render() {
 
@@ -65,92 +60,140 @@ function render() {
     mindex = randomchoice();
     rindex = randomchoice();
 
-
     while (lindex === mindex || lindex === rindex || mindex === rindex) {
 
         lindex = randomchoice();
         mindex = randomchoice();
-
     }
 
     imgone.src = userSelection[lindex].source;
-    // console.log(imgone.src);
     imgtwo.src = userSelection[mindex].source;
     imgthree.src = userSelection[rindex].source;
 
     userSelection[lindex].numShown++;
     userSelection[mindex].numShown++;
     userSelection[rindex].numShown++;
-
-    // console.log(lindex);
-    // console.log(mindex);
-    // console.log(rindex);
 }
 
 render();
-
-// console.log(userSelection[lindex]);
-// console.log(userSelection[mindex]);
-// console.log(userSelection[rindex]);
-
-
 
 imgone.addEventListener('click', userClick);
 imgtwo.addEventListener('click', userClick);
 imgthree.addEventListener('click', userClick);
 
-// photos.addEventListener('click', userClick)
-
-
 function userClick(event) {
+
     userTry++;
 
-    if (userTry < maxTry) {
+    if (userTry <= maxTry) {
         if (event.target.id === 'left-img') {
             userSelection[lindex].votes++;
-            // userSelection[lindex].numShown++;
-            // console.log(userSelection[lindex]);
+       
         } else if (event.target.id === 'mid-img') {
             userSelection[mindex].votes++;
-            // userSelection[lindex].numShown++;
-            // console.log(userSelection[mindex]);
-
+         
         } else {
             userSelection[rindex].votes++;
-            // userSelection[lindex].numShown++;
-            // console.log(userSelection[rindex]);
-
+         
         }
+
         render();
 
     } else {
-
-         press = document.getElementById('result');
+        press = document.getElementById('result');
         press.addEventListener('click', report);
-
-       
-
-
     }
-
-    
-
-
 }
 
+function showChart() {
+
+    // const labels = Utils.months({count: 7});
+    const data = {
+        labels: nameShow,
+        datasets: [{
+            axis: 'y',
+            label: '(Vote nu.)',
+            data: timesvote,
+            fill: false,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1
+        }, {
+            axis: 'y',
+            label: '(Shown nu.)',
+            data: timesShown,
+            fill: false,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            indexAxis: 'y',
+        }
+    };
 
 
-
+    var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+}
 
 function report() {
 
     let list = document.getElementById('survey-result');
 
     for (let i = 0; i < userSelection.length; i++) {
+
         let listItems = document.createElement('li');
         list.appendChild(listItems);
-        listItems.textContent = `${userSelection[i].product} has ${userSelection[i].votes} and it is appear ${userSelection[i].numShown} times on the user screen !`;
+        listItems.textContent = `${userSelection[i].product} has ${userSelection[i].votes} votes and it is appear ${userSelection[i].numShown} times on the user screen !`;
+
+        timesvote.push(Choice.all[i].votes);
+        timesShown.push(Choice.all[i].numShown);
     }
+        showChart();
+
     press.removeEventListener('click', report);
 
 }
+
+
+
