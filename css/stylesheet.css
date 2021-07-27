@@ -1,0 +1,15 @@
+div img{
+    height: 300px;
+    width: 300px;
+    padding-left: 50px;
+    padding-right: 50px;
+    border: 2px;
+}
+#result{
+    text-align: center;
+    height: 50px;
+    width: 200px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: 500px;
+}
