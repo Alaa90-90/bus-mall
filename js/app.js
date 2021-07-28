@@ -53,17 +53,18 @@ new Choice('wine-glass', 'img/wine-glass.jpg');
 function randomchoice() {
     return Math.floor(Math.random() * userSelection.length)
 }
-
+let uniqueImage=[];
 function render() {
 
     lindex = randomchoice();
     mindex = randomchoice();
     rindex = randomchoice();
 
-    while (lindex === mindex || lindex === rindex || mindex === rindex) {
+    while (lindex === mindex || lindex === rindex || mindex === rindex || uniqueImage.includes(lindex) || uniqueImage.includes(mindex) || uniqueImage.includes(rindex)) {
 
         lindex = randomchoice();
         mindex = randomchoice();
+
     }
 
     imgone.src = userSelection[lindex].source;
@@ -74,7 +75,7 @@ function render() {
     userSelection[mindex].numShown++;
     userSelection[rindex].numShown++;
 }
-
+uniqueImage=[lindex,mindex,rindex];
 render();
 
 imgone.addEventListener('click', userClick);
