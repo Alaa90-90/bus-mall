@@ -197,3 +197,19 @@ function report() {
 
 
 
+let stringarray=[];
+let newArray=[];
+
+function storing() {
+    let stringarray = JSON.stringify(Choice.all);
+    localStorage.setItem('testing', stringarray);
+}
+function getStoring() {
+    let data = localStorage.getItem('testing');
+    let parsedarray = JSON.parse(data)
+if (parsedarray !== null) {
+    let newArray = JSON.parse(data)
+    Choice.all = newArray
+}
+}
+
