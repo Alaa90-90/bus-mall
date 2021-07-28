@@ -88,13 +88,12 @@ function userClick(event) {
     if (userTry <= maxTry) {
         if (event.target.id === 'left-img') {
             userSelection[lindex].votes++;
-       
+
         } else if (event.target.id === 'mid-img') {
             userSelection[mindex].votes++;
-         
+
         } else {
             userSelection[rindex].votes++;
-         
         }
 
         render();
@@ -102,6 +101,7 @@ function userClick(event) {
     } else {
         press = document.getElementById('result');
         press.addEventListener('click', report);
+
     }
 }
 
@@ -176,6 +176,7 @@ function showChart() {
     );
 }
 
+
 function report() {
 
     let list = document.getElementById('survey-result');
@@ -186,30 +187,58 @@ function report() {
         list.appendChild(listItems);
         listItems.textContent = `${userSelection[i].product} has ${userSelection[i].votes} votes and it is appear ${userSelection[i].numShown} times on the user screen !`;
 
-        timesvote.push(Choice.all[i].votes);
-        timesShown.push(Choice.all[i].numShown);
+        timesvote.push(userSelection[i].votes);
+        timesShown.push(userSelection[i].numShown);
+
     }
-        showChart();
+    showChart();
+
 
     press.removeEventListener('click', report);
+    storing();
+
 
 }
 
 
+console.log(userSelection);
 
-let stringarray=[];
-let newArray=[];
+console.log(Choice.all);
+
+let stringarray = [];
+console.log(stringarray);
+let newArray = [];
+
 
 function storing() {
-    let stringarray = JSON.stringify(Choice.all);
+
+    let stringarray = JSON.stringify(userSelection);
+
     localStorage.setItem('testing', stringarray);
-}
-function getStoring() {
-    let data = localStorage.getItem('testing');
-    let parsedarray = JSON.parse(data)
-if (parsedarray !== null) {
-    let newArray = JSON.parse(data)
-    Choice.all = newArray
-}
+
 }
 
+function getStoring() {
+
+    let data = localStorage.getItem('testing');
+    let parsedarray = JSON.parse(data);
+    if (parsedarray !== null) {
+        userSelection = parsedarray;
+        // userSelection = [];
+
+        console.log(userSelection);
+
+    }
+        //     for (let i = 0; i < parsedarray.length; i++) {
+
+        //         let newchoice = new Choice(parsedarray[i].product, parsedarray[i].source);
+        //         newchoice.votes = parsedarray[i].votes;
+        //         newchoice.numShown = parsedarray[i].numShown;
+
+        //     }
+        // }
+
+    }
+
+
+    getStoring();
