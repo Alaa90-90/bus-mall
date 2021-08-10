@@ -207,14 +207,13 @@ console.log(userSelection);
 console.log(Choice.all);
 
 let stringarray = [];
-console.log(stringarray);
 let newArray = [];
 
 
 function storing() {
 
     let stringarray = JSON.stringify(userSelection);
-
+    console.log(stringarray);
     localStorage.setItem('testing', stringarray);
 
 }
@@ -225,22 +224,24 @@ function getStoring() {
     let parsedarray = JSON.parse(data);
     if (parsedarray !== null) {
         userSelection = parsedarray;
-        // userSelection = [];
 
         console.log(userSelection);
 
+          // userSelection = [];
+
+            // for (let i = 0; i < parsedarray.length; i++) {
+
+            //    let newChoice = new Choice(parsedarray[i].product, parsedarray[i].source);
+            //     newchoice.votes = parsedarray[i].votes;
+            //     newchoice.numShown = parsedarray[i].numShown;
+
+            // }
+  }
     }
-        //     for (let i = 0; i < parsedarray.length; i++) {
 
-        //         let newchoice = new Choice(parsedarray[i].product, parsedarray[i].source);
-        //         newchoice.votes = parsedarray[i].votes;
-        //         newchoice.numShown = parsedarray[i].numShown;
 
-        //     }
-        // }
 
-    }
+    getStoring();
 
 
     
-    getStoring();
